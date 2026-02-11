@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phoenix Zoneout Café – Loyalty & Membership</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:    #000000;
+    --deep-red: #CC1100;
+    --orange:   #FF4400;
+    --bright-orange: #FF6A00;
+    --gold:     #FFB800;
+    --cyan:     #00C8FF;
+    --white:    #FFFFFF;
+    --dark-bg:  #0A0000;
+  }
+
+  html { scroll-behavior: smooth; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--black);
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  .poster {
+    width: 100%;
+    max-width: 480px;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+    border: 3px solid var(--orange);
+    box-shadow:
+      0 0 0 6px #000,
+      0 0 0 9px var(--deep-red);
+  }
+
+  /* Scanline overlay */
+  .poster::before {
+    content:'';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.18) 3px,
+      rgba(0,0,0,0.18) 4px
+    );
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* Animated noise/grain */
+  .poster::after {
+    content:'';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 99;
+    opacity: 0.5;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    padding: 24px 16px 20px;
+    text-align: center;
+    position: relative;
+    background: linear-gradient(180deg, #1a0000 0%, #000 100%);
+    border-bottom: 3px solid var(--orange);
+    display: grid;
+    grid-template-columns: 90px 1fr 90px;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .header-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .header-btn-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Pointer arrows */
+  .header-btn-wrap::before {
+    position: absolute;
+    font-size: 16px;
+    animation: pointerPulse 1.5s ease-in-out infinite;
+  }
+
+  .header-btn-wrap:first-child::before {
+    content: '►';
+    right: -15px;
+    color: var(--gold);
+  }
+
+  .header-btn-wrap:last-child::before {
+    content: '◄';
+    left: -15px;
+    color: var(--cyan);
+  }
+
+  @keyframes pointerPulse {
+    0%, 100% {
+      opacity: 0.4;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  .nav-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    background: transparent;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    transition: transform 0.15s;
+    text-decoration: none;
+    animation: buttonBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes buttonBounce {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .nav-btn:hover { 
+    transform: scale(1.06);
+    animation: none;
+  }
+  .nav-btn:active { 
+    transform: scale(0.97);
+    animation: none;
+  }
+
+  /* Pixel-art button body */
+  .nav-btn-body {
+    position: relative;
+    padding: 10px 12px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    border-radius: 2px;
+  }
+
+  .nav-btn.loyalty .nav-btn-body {
+    background: linear-gradient(180deg, #3d0f00 0%, #1a0500 60%, #0a0100 100%);
+    border: 2px solid var(--orange);
+    box-shadow:
+      inset 0 1px 0 rgba(255,184,0,0.2),
+      inset 0 -1px 0 rgba(0,0,0,0.6);
+  }
+
+  .nav-btn.loyalty:hover .nav-btn-body {
+    border-color: var(--gold);
+  }
+
+  .nav-btn.membership .nav-btn-body {
+    background: linear-gradient(180deg, #001a26 0%, #000d14 60%, #000508 100%);
+    border: 2px solid var(--cyan);
+    box-shadow:
+      inset 0 1px 0 rgba(0,200,255,0.15),
+      inset 0 -1px 0 rgba(0,0,0,0.6);
+  }
+
+  /* Icon row */
+  .nav-btn-icon {
+    font-size: 16px;
+    display: block;
+  }
+
+  /* Label */
+  .nav-btn-label {
+    font-size: 6px;
+    letter-spacing: 1px;
+    display: block;
+  }
+
+  .nav-btn.loyalty  .nav-btn-label { color: var(--gold); }
+  .nav-btn.membership .nav-btn-label { color: var(--cyan); }
+
+  /* Pixel corner ticks on button */
+  .nav-btn-body::before, .nav-btn-body::after {
+    content:'';
+    position: absolute;
+    width: 8px; height: 8px;
+  }
+
+  .nav-btn.loyalty  .nav-btn-body::before { top:2px; left:2px;   border-top:2px solid var(--gold); border-left:2px solid var(--gold); }
+  .nav-btn.loyalty  .nav-btn-body::after  { bottom:2px; right:2px; border-bottom:2px solid var(--gold); border-right:2px solid var(--gold); }
+  .nav-btn.membership .nav-btn-body::before { top:2px; left:2px;   border-top:2px solid var(--cyan); border-left:2px solid var(--cyan); }
+  .nav-btn.membership .nav-btn-body::after  { bottom:2px; right:2px; border-bottom:2px solid var(--cyan); border-right:2px solid var(--cyan); }
+
+  /* Bottom pixel shadow block */
+  .nav-btn-shadow {
+    width: 100%;
+    height: 4px;
+    border-radius: 0 0 2px 2px;
+    margin-top: -1px;
+  }
+
+  .nav-btn.loyalty   .nav-btn-shadow { background: var(--deep-red); }
+  .nav-btn.membership .nav-btn-shadow { background: #006080; }
+
+  /* Scanline on button */
+  @keyframes btnScanline {
+    0%   { top: 0%; }
+    100% { top: 100%; }
+  }
+
+  .nav-btn-scanline {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .nav-btn-scanline::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.07);
+    animation: btnScanline 2.5s linear infinite;
+  }
+
+  /* Bouncing arrow pointing to buttons */
+  @keyframes arrowBounce {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(4px);
+      opacity: 0.7;
+    }
+  }
+
+  .nav-btn-arrow {
+    font-size: 9px;
+    margin-top: 4px;
+    animation: arrowBounce 1.5s ease-in-out infinite;
+  }
+
+  .nav-btn.loyalty   .nav-btn-arrow { color: var(--orange); }
+  .nav-btn.membership .nav-btn-arrow { color: var(--cyan); }
+
+  .header::before {
+    content:'';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cyan), var(--orange), var(--gold), var(--orange), var(--cyan));
+    animation: hueShift 3s linear infinite;
+  }
+
+  @keyframes hueShift {
+    0%   { filter: hue-rotate(0deg);   }
+    100% { filter: hue-rotate(360deg); }
+  }
+
+  .logo-ring {
+    width: 80px; height: 80px;
+    border: 3px solid var(--white);
+    border-radius: 50%;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    background: radial-gradient(circle, rgba(255,68,0,0.15) 0%, transparent 70%);
+    box-shadow: inset 0 0 30px rgba(255,100,0,0.2);
+  }
+
+  .logo-ring img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(255,184,0,0.6));
+  }
+
+  .logo-ring::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    opacity: 0.3;
+  }
+
+  .brand-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .main-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #FF4400;
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .sub-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--cyan);
+  }
+
+  /* Corner accents */
+  .corner-tl, .corner-tr, .corner-bl, .corner-br {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 10;
+  }
+
+  .corner-tl {
+    top: 12px; left: 12px;
+    border-top: 3px solid var(--gold);
+    border-left: 3px solid var(--gold);
+  }
+
+  .corner-tr {
+    top: 12px; right: 12px;
+    border-top: 3px solid var(--cyan);
+    border-right: 3px solid var(--cyan);
+  }
+
+  .corner-bl {
+    bottom: 12px; left: 12px;
+    border-bottom: 3px solid var(--gold);
+    border-left: 3px solid var(--gold);
+  }
+
+  .corner-br {
+    bottom: 12px; right: 12px;
+    border-bottom: 3px solid var(--cyan);
+    border-right: 3px solid var(--cyan);
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 0;
+  }
+
+  .loyalty-block,
+  .membership-block {
+    padding: 28px 20px;
+    position: relative;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  }
+
+  .loyalty-block.animate,
+  .membership-block.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .loyalty-block {
+    background: linear-gradient(180deg, #1a0000 0%, #000 100%);
+    border-bottom: 3px solid var(--orange);
+  }
+
+  .membership-block {
+    background: linear-gradient(180deg, #001014 0%, #000 100%);
+  }
+
+  .section-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-align: center;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .pixel-divider {
+    display: none;
+  }
+
+  .tagline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(135deg, var(--orange), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+    letter-spacing: 2px;
+  }
+
+  .tagline-sub {
+    font-size: 11px;
+    text-align: center;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding: 0 12px;
+  }
+
+  /* Point badge */
+  .point-badge {
+    background: linear-gradient(135deg, rgba(204,17,0,0.3), rgba(255,68,0,0.2));
+    border: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+    margin: 0 auto 20px;
+    max-width: 340px;
+    position: relative;
+  }
+
+  .point-badge .eq {
+    display: block;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 18px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+
+  .point-badge .note {
+    display: block;
+    font-size: 9px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.75);
+  }
+
+  /* Rules chips */
+  .rules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+
+  .rule-chip {
+    font-size: 9px;
+    padding: 8px 14px;
+    background: rgba(255,68,0,0.15);
+    border: 1px solid var(--orange);
+    border-radius: 20px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  /* Games grid */
+  .visits-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .game-card {
+    background: linear-gradient(135deg, rgba(255,68,0,0.1), rgba(204,17,0,0.05));
+    border: 2px solid rgba(255,68,0,0.4);
+    border-radius: 4px;
+    padding: 14px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    position: relative;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+  }
+
+  .game-card.animate {
+    animation: popIn 0.5s ease-out forwards;
+  }
+
+  .game-card:nth-child(1).animate { animation-delay: 0s; }
+  .game-card:nth-child(2).animate { animation-delay: 0.1s; }
+  .game-card:nth-child(3).animate { animation-delay: 0.2s; }
+  .game-card:nth-child(4).animate { animation-delay: 0.3s; }
+  .game-card:nth-child(5).animate { animation-delay: 0.4s; }
+
+  @keyframes popIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+  }
+
+  .game-icon {
+    font-size: 28px;
+    display: block;
+  }
+
+  .game-name {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .game-pts {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .game-unit {
+    font-size: 11px;
+    color: rgba(255,184,0,0.7);
+  }
+
+  /* ── VISIT MILESTONES (GLOW KEPT HERE) ── */
+  .visits-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 0 8px 10px;
+    margin-bottom: 32px;
+  }
+
+  .visits-track::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--deep-red), var(--orange), var(--gold), var(--cyan));
+    z-index: 0;
+  }
+
+  /* Moving glow traveller on the track */
+  .journey-traveller {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fff 0%, var(--gold) 40%, var(--orange) 70%, transparent 100%);
+    box-shadow:
+      0 0 6px 3px var(--gold),
+      0 0 18px 6px var(--orange),
+      0 0 32px 10px rgba(255,100,0,0.4);
+    transform: translateX(-50%);
+    z-index: 10;
+    animation: journeyTravel 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    pointer-events: none;
+  }
+
+  /* Comet tail */
+  .journey-traveller::after {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, rgba(255,184,0,0.3), var(--gold));
+    border-radius: 2px;
+  }
+
+  @keyframes journeyTravel {
+    0%   { left: 2%;   opacity: 0; }
+    5%   { opacity: 1; }
+    25%  { left: 25%;  box-shadow: 0 0 6px 3px var(--deep-red), 0 0 18px 6px var(--orange), 0 0 32px 10px rgba(255,68,0,0.4); }
+    50%  { left: 50%;  box-shadow: 0 0 6px 3px var(--orange), 0 0 18px 6px var(--gold), 0 0 32px 10px rgba(255,184,0,0.4); }
+    75%  { left: 75%;  box-shadow: 0 0 6px 3px var(--gold), 0 0 18px 6px var(--cyan), 0 0 32px 10px rgba(0,200,255,0.4); }
+    92%  { left: 99%;  box-shadow: 0 0 6px 3px var(--cyan), 0 0 18px 6px var(--cyan), 0 0 32px 10px rgba(0,200,255,0.4); opacity: 1; }
+    100% { left: 102%; opacity: 0; }
+  }
+
+  /* Node flash when traveller arrives */
+  @keyframes nodeFlash1 { 
+    0%,14%,16%,100% { box-shadow: 0 0 10px var(--deep-red); } 
+    15% { box-shadow: 0 0 0 8px rgba(204,17,0,0.3), 0 0 30px 12px var(--deep-red); } 
+  }
+  @keyframes nodeFlash2 { 
+    0%,39%,41%,100% { box-shadow: 0 0 10px var(--orange); } 
+    40% { box-shadow: 0 0 0 8px rgba(255,68,0,0.3), 0 0 30px 12px var(--orange); } 
+  }
+  @keyframes nodeFlash3 { 
+    0%,64%,66%,100% { box-shadow: 0 0 10px var(--gold); } 
+    65% { box-shadow: 0 0 0 8px rgba(255,184,0,0.3), 0 0 30px 12px var(--gold); } 
+  }
+  @keyframes nodeFlash4 { 
+    0%,89%,91%,100% { box-shadow: 0 0 10px var(--cyan); } 
+    90% { box-shadow: 0 0 0 8px rgba(0,200,255,0.3), 0 0 30px 12px var(--cyan); } 
+  }
+
+  .visit-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    max-width: 90px;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .visit-node.animate {
+    animation: scaleIn 0.6s ease-out forwards;
+  }
+
+  .visit-node:nth-child(1).animate { animation-delay: 0s; }
+  .visit-node:nth-child(2).animate { animation-delay: 0.1s; }
+  .visit-node:nth-child(3).animate { animation-delay: 0.2s; }
+  .visit-node:nth-child(4).animate { animation-delay: 0.3s; }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .visit-dot {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+  }
+
+  .visit-node:nth-child(1) .visit-dot { 
+    background: var(--deep-red); 
+    box-shadow: 0 0 10px var(--deep-red); 
+    color: #fff; 
+    animation: nodeFlash1 4s ease-in-out infinite; 
+  }
+  .visit-node:nth-child(2) .visit-dot { 
+    background: var(--orange); 
+    box-shadow: 0 0 10px var(--orange); 
+    color: #000; 
+    animation: nodeFlash2 4s ease-in-out infinite; 
+  }
+  .visit-node:nth-child(3) .visit-dot { 
+    background: var(--gold); 
+    box-shadow: 0 0 10px var(--gold); 
+    color: #000; 
+    animation: nodeFlash3 4s ease-in-out infinite; 
+  }
+  .visit-node:nth-child(4) .visit-dot { 
+    background: var(--cyan); 
+    box-shadow: 0 0 10px var(--cyan); 
+    color: #000; 
+    animation: nodeFlash4 4s ease-in-out infinite; 
+  }
+
+  .visit-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .visit-reward {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    text-align: center;
+  }
+
+  /* Leaderboard bar */
+  .leaderboard-bar {
+    background: linear-gradient(135deg, rgba(204,17,0,0.2), rgba(255,68,0,0.1));
+    border: 2px solid var(--orange);
+    border-radius: 6px;
+    padding: 18px;
+    display: grid;
+    grid-template-columns: 40px 1fr 70px;
+    gap: 14px;
+    align-items: center;
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  .leaderboard-bar.animate {
+    animation: slideInLeft 0.7s ease-out forwards;
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .lb-icon {
+    font-size: 32px;
+    text-align: center;
+  }
+
+  .lb-text {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .lb-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  .lb-desc {
+    font-size: 9px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .lb-badge {
+    background: linear-gradient(135deg, var(--orange), var(--deep-red));
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    padding: 8px 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    text-align: center;
+    line-height: 1.4;
+    color: var(--white);
+  }
+
+  /* ── MEMBERSHIP CARDS ── */
+  .membership-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 8px;
+  }
+
+  .mem-card {
+    background: linear-gradient(135deg, rgba(0,200,255,0.08), rgba(0,100,150,0.05));
+    border: 3px solid var(--cyan);
+    border-radius: 8px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mem-card::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--cyan), var(--white), var(--cyan));
+  }
+
+  .mem-tier {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: var(--cyan);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .mem-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    text-align: center;
+    background: linear-gradient(135deg, var(--cyan), var(--white));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    letter-spacing: 1px;
+  }
+
+  .mem-price {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 20px;
+    text-align: center;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .mem-divider {
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    margin: 0 auto 18px;
+    width: 80%;
+  }
+
+  .mem-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mem-perks li {
+    font-size: 11px;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.9);
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .mem-perks li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--cyan);
+    font-size: 12px;
+  }
+
+  .perk-highlight {
+    color: var(--gold);
+    font-weight: bold;
+  }
+
+  .mem-card {
+    background: linear-gradient(135deg, rgba(0,200,255,0.08), rgba(0,100,150,0.05));
+    border: 3px solid var(--cyan);
+    border-radius: 8px;
+    padding: 24px 20px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: perspective(1000px) rotateY(-90deg) translateY(20px);
+  }
+
+  .mem-card.animate {
+    animation: flipIn 0.8s ease-out forwards, bouncyPulse 3s ease-in-out 0.8s infinite;
+  }
+
+  .mem-card.monthly.animate {
+    animation-delay: 0s, 0.8s;
+  }
+
+  .mem-card.weekly.animate {
+    animation-delay: 0.2s, 1s;
+  }
+
+  @keyframes flipIn {
+    from {
+      opacity: 0;
+      transform: perspective(1000px) rotateY(-90deg) translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: perspective(1000px) rotateY(0) translateY(0);
+    }
+  }
+
+  @keyframes bouncyPulse {
+    0%, 100% { 
+      transform: scale(1) translateY(0); 
+    }
+    50% { 
+      transform: scale(1.03) translateY(-5px); 
+    }
+  }
+
+  .mem-card:hover {
+    animation-play-state: paused;
+    transform: scale(1.05) translateY(-8px);
+    transition: transform 0.3s ease;
+  }
+
+  /* Scrolling ticker */
+  .ticker-wrap {
+    overflow: hidden;
+    background: var(--deep-red);
+    padding: 8px 0;
+    border-top: 2px solid var(--orange);
+    border-bottom: 2px solid var(--orange);
+    margin-bottom: 0;
+  }
+
+  .ticker {
+    display: flex;
+    gap: 60px;
+    animation: ticker 18s linear infinite;
+    white-space: nowrap;
+  }
+
+  @keyframes ticker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .ticker-item {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(180deg, #000 0%, #1a0000 100%);
+    border-top: 3px solid var(--orange);
+  }
+
+  .footer-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, var(--orange), var(--gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+
+  .footer-tagline {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    color: var(--cyan);
+  }
+</style>
+</head>
+<body>
+<div class="poster">
+
+  <!-- Corner accents -->
+  <div class="corner-tl"></div>
+  <div class="corner-tr"></div>
+  <div class="corner-bl"></div>
+  <div class="corner-br"></div>
+
+  <!-- Header -->
+  <div class="header">
+
+    <!-- LEFT: Loyalty button -->
+    <div class="header-btn-wrap">
+      <a class="nav-btn loyalty" href="#loyalty-section" onclick="scrollTo('loyalty-section')">
+        <div class="nav-btn-body">
+          <div class="nav-btn-scanline"></div>
+          <span class="nav-btn-icon">🔥</span>
+          <span class="nav-btn-label">LOYALTY</span>
+        </div>
+        <div class="nav-btn-shadow"></div>
+        <div class="nav-btn-arrow">▼</div>
+      </a>
+    </div>
+
+    <!-- CENTER: Logo + title -->
+      <div class="header-center">
+      <div class="logo-ring">
+        <img src="images/Phoenix-logo.png" alt="Phoenix Zoneout Café logo">
+      </div>
+      <div class="brand-name">Phoenix Zoneout Café</div>
+      <div class="main-title">LOYALTY &amp;<br>MEMBERSHIP</div>
+      <div class="sub-title">▸ EARN · PLAY · REDEEM ◂</div>
+    </div>
+
+    <!-- RIGHT: Membership button -->
+    <div class="header-btn-wrap">
+      <a class="nav-btn membership" href="#membership-section" onclick="scrollTo('membership-section')">
+        <div class="nav-btn-body">
+          <div class="nav-btn-scanline"></div>
+          <span class="nav-btn-icon">🎴</span>
+          <span class="nav-btn-label">MEMBERSHIPS</span>
+        </div>
+        <div class="nav-btn-shadow"></div>
+        <div class="nav-btn-arrow">▼</div>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Ticker -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item">★ PLAY MORE &nbsp;·&nbsp; VISIT MORE &nbsp;·&nbsp; PAY WITH POINTS ★</span>
+      <span class="ticker-item">★ 1 PHOENIX POINT = ₹1 &nbsp;·&nbsp; EARN EVERY SESSION ★</span>
+      <span class="ticker-item">★ PLAY MORE &nbsp;·&nbsp; VISIT MORE &nbsp;·&nbsp; PAY WITH POINTS ★</span>
+      <span class="ticker-item">★ 1 PHOENIX POINT = ₹1 &nbsp;·&nbsp; EARN EVERY SESSION ★</span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- ── LOYALTY SECTION ── -->
+    <div id="loyalty-section" class="loyalty-block">
+      <div class="section-label">LOYALTY PROGRAM</div>
+      <div class="pixel-divider"><span>★★★</span></div>
+
+      <div class="tagline">PHOENIX POINTS</div>
+      <div class="tagline-sub">Earn points every time you game. Use them instead of money for your next session.</div>
+
+      <div class="point-badge">
+        <span class="eq">1 PT = ₹1</span>
+        <span class="note">Points redeemable on gaming only<br>· Resets end of every month</span>
+      </div>
+
+      <div class="rules">
+        <span class="rule-chip">Usable for gaming sessions</span>
+        <span class="rule-chip">Not valid on food &amp; beverages</span>
+      </div>
+
+      <!-- Games earning -->
+      <div class="visits-label">▸ POINTS EARNED PER HOUR</div>
+      <div class="games-grid">
+        <div class="game-card">
+          <span class="game-icon">🎮</span>
+          <span class="game-name">PS5</span>
+          <span class="game-pts">10 <span class="game-unit">pts</span></span>
+        </div>
+        <div class="game-card">
+          <span class="game-icon">🕹️</span>
+          <span class="game-name">PS4</span>
+          <span class="game-pts">15 <span class="game-unit">pts</span></span>
+        </div>
+        <div class="game-card">
+          <span class="game-icon">🎱</span>
+          <span class="game-name">POOL</span>
+          <span class="game-pts">10 <span class="game-unit">pts</span></span>
+        </div>
+        <div class="game-card">
+          <span class="game-icon">🎯</span>
+          <span class="game-name">SNOOKER</span>
+          <span class="game-pts">15 <span class="game-unit">pts</span></span>
+        </div>
+        <div class="game-card">
+          <span class="game-icon">🥽</span>
+          <span class="game-name">VR EXP</span>
+          <span class="game-pts">20 <span class="game-unit">pts</span></span>
+        </div>
+      </div>
+
+      <!-- Visit milestones -->
+      <div class="visits-label">▸ VISIT BONUS MILESTONES</div>
+      <div class="visits-track">
+        <div class="visit-node">
+          <div class="visit-dot">4</div>
+          <span class="visit-label">4 VISITS</span>
+          <span class="visit-reward">+40 PTS</span>
+        </div>
+        <div class="visit-node">
+          <div class="visit-dot">8</div>
+          <span class="visit-label">8 VISITS</span>
+          <span class="visit-reward">+100 PTS</span>
+        </div>
+        <div class="visit-node">
+          <div class="visit-dot">12</div>
+          <span class="visit-label">12 VISITS</span>
+          <span class="visit-reward">+180 PTS</span>
+        </div>
+        <div class="visit-node">
+          <div class="visit-dot">20+</div>
+          <span class="visit-label">20+ VISITS</span>
+          <span class="visit-reward">+300 PTS</span>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="leaderboard-bar">
+        <div class="lb-icon">🏆</div>
+        <div class="lb-text">
+          <span class="lb-title">LEADERBOARD</span>
+          <span class="lb-desc">Top loyal players ranked every month. The most loyal customer earns bonus points at month end.</span>
+        </div>
+        <div class="lb-badge">MONTHLY<br>RANKING</div>
+      </div>
+    </div>
+
+    <!-- ── MEMBERSHIP SECTION ── -->
+    <div id="membership-section" class="membership-block">
+      <div class="section-label">MEMBERSHIPS</div>
+      <div class="pixel-divider"><span>★★★</span></div>
+
+      <div class="membership-cards">
+
+        <!-- Monthly -->
+        <div class="mem-card monthly">
+          <div class="mem-tier">MONTHLY PLAN</div>
+          <div class="mem-title">INFINITE<br>MODE</div>
+          <div class="mem-price">₹2,999</div>
+          <div class="mem-divider"></div>
+          <ul class="mem-perks">
+            <li><span class="perk-highlight">FREE gaming</span> every walk-in session</li>
+            <li><span class="perk-highlight">Buy 1 Get 1</span> free on all refreshments</li>
+            <li><span class="perk-highlight">450 FREE</span> Phoenix Points included</li>
+          </ul>
+        </div>
+
+        <!-- Weekly -->
+        <div class="mem-card weekly">
+          <div class="mem-tier">WEEKLY PLAN</div>
+          <div class="mem-title">TURBO<br>MODE</div>
+          <div class="mem-price">₹999</div>
+          <div class="mem-divider"></div>
+          <ul class="mem-perks">
+            <li><span class="perk-highlight">10% OFF</span> every walk-in session</li>
+            <li><span class="perk-highlight">10% OFF</span> for friends playing together</li>
+            <li><span class="perk-highlight">1 HOUR EXTRA</span> gaming session free</li>
+            <li><span class="perk-highlight">50 FREE</span> Phoenix Points included</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-brand">PHOENIX ZONEOUT CAFÉ</div>
+    <div class="footer-tagline">PLAY MORE · EARN MORE · RISE UP</div>
+  </div>
+
+</div>
+
+<script>
+  // Smooth scroll for nav buttons
+  function scrollTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  // Also intercept the <a> href clicks for smooth scroll
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').replace('#', '');
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Scroll-triggered animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate');
+        
+        // Animate children if parent has data-animate-children
+        if (entry.target.hasAttribute('data-animate-children')) {
+          const children = entry.target.querySelectorAll('[data-animate]');
+          children.forEach(child => {
+            child.classList.add('animate');
+          });
+        }
+      }
+    });
+  }, observerOptions);
+
+  // Observe sections
+  document.querySelectorAll('.loyalty-block, .membership-block').forEach(section => {
+    observer.observe(section);
+  });
+
+  // Observe game cards
+  document.querySelectorAll('.game-card').forEach(card => {
+    observer.observe(card);
+  });
+
+  // Observe visit nodes
+  document.querySelectorAll('.visit-node').forEach(node => {
+    observer.observe(node);
+  });
+
+  // Observe leaderboard
+  const leaderboard = document.querySelector('.leaderboard-bar');
+  if (leaderboard) observer.observe(leaderboard);
+
+  // Observe membership cards
+  document.querySelectorAll('.mem-card').forEach(card => {
+    observer.observe(card);
+  });
+</script>
+</body>
+</html>
