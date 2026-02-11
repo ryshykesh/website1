@@ -5,476 +5,1088 @@
     <meta name="google-site-verification" content="9Q-Gpy_WdsrUomKd4BJRfuVR1d3p7-TsPGaYrvuCXRg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phoenix Zone Out - Gaming & Snooker Cafe</title>
+
     <meta name="description" content="Phoenix Zone Out is a gaming and snooker cafe offering PS5, PS4, VR gaming, Snooker and Pool in a relaxed and comfy environment." />
-
     <meta name="keywords" content="Phoenix Zone Out, gaming cafe, PS5 gaming, PS4 gaming, VR, snooker cafe, Snooker, Pool, JP Frinity Cup" />
-
     <meta name="author" content="Phoenix Zone Out" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
     <style>
-        /* Header layout with logo */
-.nav-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-}
-
-/* Logo size control - visual only */
-.site-logo {
-    height: 70px;              /*Layout size(DO NOT make this huge)*/
-    width: auto;
-    display: block;
-
-    /*Visual enlargement without affecting layout*/
-    transform: scale(1.5);
-    transform-origin: left center;
-}
-
-/* Remove default link styling */
-.logo-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --phoenix-orange: #FF6B35;
-            --phoenix-red: #E63946;
-            --phoenix-yellow: #FFB627;
-            --phoenix-cyan: #4ECDC4;
-            --phoenix-blue: #457B9D;
-            --dark-bg: #1A1A2E;
-            --darker-bg: #0F0F1E;
-            --text-light: #FFFFFF;
+            --black:         #000000;
+            --deep-red:      #CC1100;
+            --orange:        #FF4400;
+            --bright-orange: #FF6A00;
+            --gold:          #FFB800;
+            --cyan:          #00C8FF;
+            --white:         #FFFFFF;
+            --dark-bg:       #0A0000;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Orbitron', sans-serif;
-            background-color: var(--darker-bg);
-            color: var(--text-light);
+            font-family: 'Share Tech Mono', monospace;
+            background: var(--black);
+            color: var(--white);
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+            /* Prevent text from being too small on mobile */
+            -webkit-text-size-adjust: 100%;
         }
 
-        /* Header & Navigation */
+        /* Scanline overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0px,
+                transparent 3px,
+                rgba(0,0,0,0.18) 3px,
+                rgba(0,0,0,0.18) 4px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Noise overlay */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.25rem;
+        }
+
+        /* ══════════════════════════════════════════
+           HEADER & NAVIGATION
+        ══════════════════════════════════════════ */
         header {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
-            padding: 1rem 0;
+            background: linear-gradient(180deg, #1a0000 0%, #000 100%);
+            padding: 0.75rem 0;
             position: sticky;
             top: 0;
-            z-index: 100;
-            border-bottom: 2px solid var(--phoenix-cyan);
+            z-index: 1000;
+            border-bottom: 3px solid var(--orange);
+            box-shadow: 0 0 30px rgba(255,100,0,0.3);
+            animation: fadeIn 0.8s ease-out;
         }
 
-        nav {
-            width: 100%;
-            padding: 0 2rem;
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan), var(--orange), var(--gold), var(--orange), var(--cyan));
+            animation: hueShift 3s linear infinite;
+        }
+
+        @keyframes hueShift {
+            0%   { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .nav-container {
             display: flex;
-            justify-content: flex-end;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 1.25rem;
         }
 
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .site-logo {
+            height: 60px;
+            width: auto;
+            display: block;
+            transform: scale(1.4);
+            transform-origin: left center;
+            filter: drop-shadow(0 0 15px rgba(255,100,0,0.6));
+        }
+
+        /* Desktop Nav */
         nav ul {
             list-style: none;
             display: flex;
-            gap: 3rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         nav a {
-            color: #87CEEB;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: #FFFFFF;
             text-decoration: none;
+            padding: 10px 14px;
+            background: linear-gradient(180deg, #3d0f00 0%, #1a0500 60%, #0a0100 100%);
+            border: 2px solid var(--orange);
+            border-radius: 2px;
+            display: block;
             transition: all 0.3s;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border: 2px solid var(--phoenix-orange);
-            border-radius: 8px;
-            background-color: var(--phoenix-orange);
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.6), 0 0 30px rgba(255, 107, 53, 0.4);
+            text-shadow: 0 0 6px rgba(255,255,255,0.8);
+            box-shadow:
+                0 0 8px rgba(255,100,0,0.35),
+                0 0 16px rgba(255,100,0,0.15),
+                inset 0 1px 0 rgba(255,184,0,0.15),
+                inset 0 -1px 0 rgba(0,0,0,0.6);
+            white-space: nowrap;
+            /* Touch-friendly minimum height */
+            min-height: 44px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
         }
 
-        nav a:hover {
-            color: #87CEEB;
-            background-color: var(--phoenix-red);
-            border-color: var(--phoenix-red);
-            box-shadow: 0 0 25px rgba(230, 57, 70, 0.8), 0 0 50px rgba(230, 57, 70, 0.6), 0 4px 15px rgba(255, 107, 53, 0.4);
+        nav a:hover, nav a:active {
+            border-color: var(--gold);
+            box-shadow:
+                0 0 14px rgba(255,100,0,0.65),
+                0 0 28px rgba(255,184,0,0.3),
+                inset 0 1px 0 rgba(255,184,0,0.25);
             transform: translateY(-2px);
         }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--phoenix-blue) 100%);
-            padding: 6rem 2rem;
-            text-align: center;
-            border-bottom: 3px solid var(--phoenix-orange);
+        /* Hamburger button */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 44px;
+            height: 44px;
+            padding: 8px;
+            background: linear-gradient(180deg, #3d0f00 0%, #1a0500 100%);
+            border: 2px solid var(--orange);
+            border-radius: 2px;
+            cursor: pointer;
+            z-index: 1001;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(255,100,0,0.4);
         }
-        /*Hero title background image*/
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 1px;
+            transition: all 0.3s;
+            box-shadow: 0 0 4px rgba(255,184,0,0.6);
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* Mobile nav overlay */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 999;
+        }
+
+        .mobile-nav-overlay.open {
+            display: block;
+        }
+
+        .mobile-nav-menu {
+            position: fixed;
+            top: 0;
+            right: -280px;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(180deg, #1a0000 0%, #050000 100%);
+            border-left: 3px solid var(--orange);
+            z-index: 1000;
+            padding: 80px 1.5rem 2rem;
+            transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: -10px 0 40px rgba(255,68,0,0.25);
+        }
+
+        .mobile-nav-menu.open {
+            right: 0;
+        }
+
+        .mobile-nav-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav-menu a {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 11px;
+            color: #FFFFFF;
+            text-decoration: none;
+            padding: 16px 20px;
+            background: linear-gradient(180deg, #3d0f00 0%, #1a0500 60%, #0a0100 100%);
+            border: 2px solid var(--orange);
+            border-radius: 2px;
+            display: block;
+            text-shadow: 0 0 6px rgba(255,255,255,0.8);
+            box-shadow: 0 0 8px rgba(255,100,0,0.35);
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .mobile-nav-menu a:active {
+            border-color: var(--gold);
+            box-shadow: 0 0 14px rgba(255,100,0,0.65);
+        }
+
+        /* ══════════════════════════════════════════
+           HERO SECTION
+        ══════════════════════════════════════════ */
+        .hero {
+            background: linear-gradient(180deg, #000 0%, #0d0000 50%, #1a0000 100%);
+            padding: 3rem 1.25rem 4rem;
+            text-align: center;
+            border-bottom: 3px solid var(--orange);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,100,0,0.1) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
         .hero-title-bg {
             position: relative;
             width: 100%;
             max-width: 100%;
-            padding: 3rem 2rem;
-            margin-bottom: 2rem;
+            padding: 2.5rem 1.5rem;
+            margin-bottom: 1.5rem;
+            background-image: url("images/Phoenix-logo3.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 0;
+            overflow: hidden;
+            border: 3px solid var(--orange);
+            box-shadow: 
+                0 0 0 4px #000,
+                0 0 0 7px var(--deep-red),
+                0 0 40px rgba(255,100,0,0.4);
+        }
 
-    background-image: url("images/Phoenix-logo3.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+        .hero-title-bg::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1;
+        }
 
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-/* Dark overlay for text contrast */
-.hero-title-bg::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        rgba(0, 0, 0, 0.65),
-        rgba(0, 0, 0, 0.65)
-    );
-    z-index: 1;
-}
-
-/* Keep text above overlay */
-.hero-title-bg h1 {
-    border-bottom: 3px solid var(--phoenix-orange);
-    box-shadow: 0 10px 40px rgba(255, 107, 53, 0.4);
-    position: relative;
-    z-index: 2;
-}
-
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--phoenix-orange), var(--phoenix-yellow), var(--phoenix-cyan));
+        .hero-title-bg h1 {
+            position: relative;
+            z-index: 2;
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1.2rem, 4vw, 2.8rem);
+            line-height: 1.5;
+            background: linear-gradient(180deg, var(--gold) 0%, var(--orange) 50%, var(--deep-red) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: glowBounce 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 6px rgba(255,100,0,0.3));
+            animation: glowPulse 3s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
-        @keyframes glowBounce {
+        .hero-title-bg h1:active {
+            background: linear-gradient(180deg, var(--cyan) 0%, var(--gold) 50%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(0,200,255,0.8));
+            transform: scale(0.98);
+        }
+
+        @keyframes glowPulse {
             0%, 100% {
-                transform: translateY(0) scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5)) brightness(1);
-            }
-            25% {
-                transform: translateY(-10px) scale(1.02);
-                filter: drop-shadow(0 0 30px rgba(255, 182, 39, 1)) drop-shadow(0 0 50px rgba(78, 205, 196, 0.8)) brightness(1.5);
+                filter: drop-shadow(0 0 5px rgba(255,100,0,0.25));
+                transform: scale(1);
             }
             50% {
-                transform: translateY(0) scale(1);
-                filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.8)) brightness(1.2);
-            }
-            75% {
-                transform: translateY(-5px) scale(1.01);
-                filter: drop-shadow(0 0 25px rgba(255, 182, 39, 0.9)) brightness(1.3);
+                filter: drop-shadow(0 0 12px rgba(255,184,0,0.4)) drop-shadow(0 0 18px rgba(255,100,0,0.3));
+                transform: scale(1.02);
             }
         }
 
         .hero p {
-            font-size: 1.3rem;
-            color: var(--phoenix-cyan);
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.8rem, 2.5vw, 1.2rem);
+            color: var(--cyan);
+            text-shadow: 0 0 8px var(--cyan);
             margin-bottom: 2rem;
-            animation: twistIn 2s ease-out;
+            letter-spacing: 1px;
+            line-height: 1.7;
         }
 
-        @keyframes twistIn {
-            0% {
-                opacity: 0;
-                transform: rotate(-180deg) scale(0.3);
-            }
-            50% {
-                transform: rotate(10deg) scale(1.1);
-            }
-            100% {
-                opacity: 1;
-                transform: rotate(0deg) scale(1);
-            }
-        }
-
+        /* ── CTA with side arrows close to button ── */
         .cta-container {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.75rem;
         }
 
-        .arrow {
-            font-size: 2rem;
-            color: var(--phoenix-yellow);
-            animation: bounceArrow 1s ease-in-out infinite;
+        .arrow-side {
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            color: var(--gold);
+            display: inline-block;
+            animation: bounceArrowLeft 1.5s ease-in-out infinite;
+            text-shadow: 0 0 8px rgba(255,184,0,0.7);
+            flex-shrink: 0;
         }
 
-        .arrow.left {
-            animation: bounceArrowLeft 1s ease-in-out infinite;
-        }
-
-        .arrow.right {
-            animation: bounceArrowRight 1s ease-in-out infinite;
+        .arrow-side.right {
+            animation: bounceArrowRight 1.5s ease-in-out infinite;
         }
 
         @keyframes bounceArrowLeft {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(10px);
-            }
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(6px); opacity: 0.7; }
         }
 
         @keyframes bounceArrowRight {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(-10px);
-            }
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            50% { transform: translateX(-6px); opacity: 0.7; }
         }
 
         .cta-button {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--phoenix-orange), var(--phoenix-red));
-            color: var(--text-light);
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(10px, 2.5vw, 14px);
+            background: linear-gradient(180deg, #3d0f00 0%, #1a0500 60%, #0a0100 100%);
+            color: #FFFFFF;
             text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 2px solid var(--phoenix-yellow);
-            animation: glowSlideIn 2s ease-out;
+            padding: 18px 28px;
+            border: 3px solid var(--orange);
+            border-radius: 2px;
+            transition: all 0.3s;
+            text-shadow: 0 0 8px rgba(255,255,255,0.8);
+            box-shadow:
+                0 0 15px rgba(255,100,0,0.4),
+                0 0 28px rgba(255,100,0,0.2),
+                inset 0 2px 0 rgba(255,184,0,0.15),
+                inset 0 -2px 0 rgba(0,0,0,0.6);
+            position: relative;
+            overflow: hidden;
+            animation: buttonBounce 2s ease-in-out infinite;
+            display: inline-block;
+            line-height: 1.4;
+            text-align: center;
+            /* Touch-friendly */
+            min-height: 56px;
+            display: inline-flex;
+            align-items: center;
         }
 
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+        @keyframes buttonBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-6px) scale(1.04); }
         }
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,184,0,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before { left: 100%; }
+
+        .cta-button:hover, .cta-button:active {
+            border-color: var(--gold);
+            box-shadow:
+                0 0 22px rgba(255,100,0,0.7),
+                0 0 42px rgba(255,184,0,0.4),
+                inset 0 2px 0 rgba(255,184,0,0.3);
+            animation: buttonBounce 1s ease-in-out infinite;
+        }
+
+        /* ══════════════════════════════════════════
+           PRICING SECTION
+        ══════════════════════════════════════════ */
+        .pricing {
+            background: linear-gradient(180deg, #0d0000 0%, #000 50%, #0d0000 100%);
+            padding: 4rem 1.25rem;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
         }
 
         .section-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1.1rem, 4vw, 2rem);
             text-align: center;
-            font-size: 2.5rem;
             margin-bottom: 3rem;
-            color: var(--phoenix-orange);
+            background: linear-gradient(90deg, var(--orange), var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 14px rgba(255,100,0,0.55));
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            line-height: 1.5;
         }
 
-        /* Pricing Section */
-        .pricing {
-            background-color: var(--darker-bg);
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--orange), var(--gold), var(--orange), transparent);
         }
 
         .pricing-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
+            gap: 1.25rem;
+            margin-bottom: 2rem;
         }
 
-        @keyframes slideInCard {
-            0% {
-                opacity: 0;
-                transform: translateX(-100px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
+        /* Pricing cards are now clickable links */
         .pricing-card {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--phoenix-blue) 100%);
-            padding: 1.5rem;
-            border-radius: 15px;
+            background: linear-gradient(145deg, #0d0000 0%, #150800 70%, #000 100%);
+            border: 2px solid var(--orange);
+            border-radius: 2px;
+            padding: 1.5rem 1rem;
             text-align: center;
-            border: 2px solid var(--phoenix-orange);
-            transition: transform 0.3s;
-            opacity: 0;
-            animation: slideInCard 0.8s ease-out forwards;
+            position: relative;
+            transition: all 0.4s;
+            box-shadow: 
+                0 0 14px rgba(255,68,0,0.15),
+                inset 0 0 40px rgba(0,0,0,0.6);
+            animation: fadeInScale 0.8s ease-out backwards;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+            /* Touch feedback */
+            -webkit-tap-highlight-color: rgba(255,100,0,0.15);
         }
 
-        .pricing-card:nth-child(1) {
-            animation-delay: 0.2s;
+        .pricing-card:nth-child(1) { animation-delay: 0.7s; }
+        .pricing-card:nth-child(2) { animation-delay: 0.85s; }
+        .pricing-card:nth-child(3) { animation-delay: 1s; }
+        .pricing-card:nth-child(4) { animation-delay: 1.15s; }
+
+        .pricing-card::before,
+        .pricing-card::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: var(--orange);
         }
 
-        .pricing-card:nth-child(2) {
-            animation-delay: 0.4s;
+        .pricing-card::before {
+            top: 6px; left: 6px;
+            border-top: 2px solid;
+            border-left: 2px solid;
         }
 
-        .pricing-card:nth-child(3) {
-            animation-delay: 0.6s;
+        .pricing-card::after {
+            bottom: 6px; right: 6px;
+            border-bottom: 2px solid;
+            border-right: 2px solid;
         }
 
-        .pricing-card:nth-child(4) {
-            animation-delay: 0.8s;
+        .pricing-card:hover,
+        .pricing-card:active {
+            transform: translateY(-8px);
+            border-color: var(--gold);
+            box-shadow: 
+                0 0 28px rgba(255,100,0,0.4),
+                0 0 56px rgba(255,184,0,0.2),
+                inset 0 0 40px rgba(255,68,0,0.08);
         }
 
-        .pricing-card:hover {
-            transform: scale(1.05);
+        .pricing-card:hover::before,
+        .pricing-card:hover::after,
+        .pricing-card:active::before,
+        .pricing-card:active::after {
+            border-color: var(--gold);
         }
 
         .pricing-card h3 {
-            color: var(--phoenix-cyan);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px rgba(78, 205, 196, 0.8), 0 0 20px rgba(78, 205, 196, 0.5), 0 0 30px rgba(78, 205, 196, 0.3);
-            animation: titleGlow 2s ease-in-out infinite;
-        }
-
-        @keyframes titleGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(78, 205, 196, 0.8), 0 0 20px rgba(78, 205, 196, 0.5), 0 0 30px rgba(78, 205, 196, 0.3);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(78, 205, 196, 1), 0 0 30px rgba(78, 205, 196, 0.8), 0 0 40px rgba(78, 205, 196, 0.6);
-            }
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(0.8rem, 2vw, 1.1rem);
+            color: var(--orange);
+            margin-bottom: 0.75rem;
+            text-shadow: 0 0 8px var(--orange);
+            letter-spacing: 1px;
         }
 
         .price {
-            font-size: 2rem;
-            color: var(--phoenix-yellow);
-            font-weight: bold;
-            margin: 1rem 0;
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            background: linear-gradient(90deg, var(--gold), var(--orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 8px rgba(255,184,0,0.45));
+            margin: 0.6rem 0;
         }
 
         .pricing-card p {
-            font-weight: bold;
-            color: var(--phoenix-yellow);
+            font-size: clamp(0.7rem, 1.8vw, 0.85rem);
+            color: var(--cyan);
+            margin: 0.3rem 0;
+            text-shadow: 0 0 4px rgba(0,200,255,0.4);
         }
 
-        .pricing-card ul {
-            list-style: none;
-            margin: 1.5rem 0;
+        /* Small "Tap to Book" label on cards */
+        .book-label {
+            display: block;
+            margin-top: 1rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 7px;
+            color: var(--gold);
+            text-shadow: 0 0 6px var(--gold);
+            letter-spacing: 1px;
+            opacity: 0.75;
         }
 
-        .pricing-card li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(78, 205, 196, 0.2);
-        }
-
-        /* About Section */
-        .about {
-            background-color: var(--dark-bg);
+        /* ══════════════════════════════════════════
+           OFFERS SECTION
+        ══════════════════════════════════════════ */
+        .offers {
+            background: linear-gradient(145deg, #0d0000 0%, #150800 100%);
+            padding: 4rem 1.25rem;
             text-align: center;
+            border-top: 2px solid var(--deep-red);
+            border-bottom: 2px solid var(--deep-red);
+            animation: fadeInUp 1s ease-out 0.7s backwards;
         }
 
-        .about p {
-            font-size: 1.2rem;
+        .offers-intro {
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: var(--white);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
             max-width: 800px;
             margin: 0 auto;
-            line-height: 1.8;
-            color: var(--text-light);
-            opacity: 0.95;
         }
 
-        /* Contact Section */
+        .offer-card {
+            background: linear-gradient(145deg, #1a0400 0%, #0a0200 70%, #000 100%);
+            border: 3px solid var(--orange);
+            border-radius: 2px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s;
+            box-shadow: 
+                0 0 16px rgba(255,68,0,0.2),
+                inset 0 0 40px rgba(0,0,0,0.6);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            -webkit-tap-highlight-color: rgba(255,100,0,0.15);
+        }
+
+        .offer-card:nth-child(1) {
+            animation: fadeInScale 0.8s ease-out 1.2s backwards;
+        }
+
+        .offer-card:nth-child(2) {
+            animation: fadeInScale 0.8s ease-out 1.4s backwards;
+            background: linear-gradient(145deg, #001a26 0%, #000d14 70%, #000 100%);
+            border-color: var(--cyan);
+        }
+
+        .offer-card::before,
+        .offer-card::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+        }
+
+        .offer-card:nth-child(1)::before {
+            top: 8px; left: 8px;
+            border-top: 2px solid var(--orange);
+            border-left: 2px solid var(--orange);
+        }
+        .offer-card:nth-child(1)::after {
+            bottom: 8px; right: 8px;
+            border-bottom: 2px solid var(--orange);
+            border-right: 2px solid var(--orange);
+        }
+        .offer-card:nth-child(2)::before {
+            top: 8px; left: 8px;
+            border-top: 2px solid var(--cyan);
+            border-left: 2px solid var(--cyan);
+        }
+        .offer-card:nth-child(2)::after {
+            bottom: 8px; right: 8px;
+            border-bottom: 2px solid var(--cyan);
+            border-right: 2px solid var(--cyan);
+        }
+
+        .offer-card:hover, .offer-card:active {
+            transform: translateY(-8px);
+        }
+
+        .offer-card:nth-child(1):hover, .offer-card:nth-child(1):active {
+            border-color: var(--gold);
+            box-shadow: 
+                0 0 30px rgba(255,100,0,0.5),
+                0 0 60px rgba(255,184,0,0.25),
+                inset 0 0 40px rgba(255,68,0,0.1);
+        }
+
+        .offer-card:nth-child(2):hover, .offer-card:nth-child(2):active {
+            border-color: var(--cyan);
+            box-shadow: 
+                0 0 30px rgba(0,200,255,0.5),
+                0 0 60px rgba(0,200,255,0.25),
+                inset 0 0 40px rgba(0,200,255,0.08);
+        }
+
+        .offer-icon {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+
+        .offer-card h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.85rem, 2.5vw, 1.3rem);
+            margin-bottom: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        .offer-card:nth-child(1) h3 {
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .offer-card:nth-child(2) h3 {
+            color: var(--cyan);
+            text-shadow: 0 0 10px var(--cyan);
+        }
+
+        .offer-card p {
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            color: var(--white);
+            opacity: 0.85;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .offer-arrow {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.65rem, 1.8vw, 0.9rem);
+            margin-top: 0.75rem;
+        }
+
+        .offer-card:nth-child(1) .offer-arrow { color: var(--orange); }
+        .offer-card:nth-child(2) .offer-arrow { color: var(--cyan); }
+
+        /* ══════════════════════════════════════════
+           DISCOUNTS SECTION
+        ══════════════════════════════════════════ */
+        .discounts {
+            background: linear-gradient(145deg, #150800 0%, #0d0000 100%);
+            padding: 4rem 1.25rem;
+            text-align: center;
+            border-top: 2px solid var(--deep-red);
+            border-bottom: 2px solid var(--deep-red);
+            animation: fadeInUp 1s ease-out 0.8s backwards;
+        }
+
+        .discounts-intro {
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: var(--white);
+            opacity: 0.9;
+            line-height: 1.7;
+        }
+
+        .discount-card {
+            background: linear-gradient(145deg, #1a0800 0%, #0f0400 70%, #000 100%);
+            border: 3px solid var(--gold);
+            border-radius: 2px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            transition: all 0.4s;
+            box-shadow: 
+                0 0 16px rgba(255,184,0,0.2),
+                inset 0 0 40px rgba(0,0,0,0.6);
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            animation: fadeInScale 0.8s ease-out 1.5s backwards;
+            -webkit-tap-highlight-color: rgba(255,184,0,0.15);
+        }
+
+        .discount-card::before,
+        .discount-card::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+        }
+        .discount-card::before {
+            top: 8px; left: 8px;
+            border-top: 2px solid var(--gold);
+            border-left: 2px solid var(--gold);
+        }
+        .discount-card::after {
+            bottom: 8px; right: 8px;
+            border-bottom: 2px solid var(--gold);
+            border-right: 2px solid var(--gold);
+        }
+
+        .discount-card:hover, .discount-card:active {
+            transform: translateY(-8px);
+            border-color: var(--orange);
+            box-shadow: 
+                0 0 30px rgba(255,184,0,0.5),
+                0 0 60px rgba(255,100,0,0.25),
+                inset 0 0 40px rgba(255,184,0,0.1);
+        }
+
+        .discount-icon {
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+
+        .discount-card h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.85rem, 2.5vw, 1.3rem);
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold);
+            margin-bottom: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        .discount-card p {
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            color: var(--white);
+            opacity: 0.85;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .highlight-red {
+            color: #FF0000;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255,0,0,0.6);
+        }
+
+        .discount-arrow {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.65rem, 1.8vw, 0.9rem);
+            color: var(--orange);
+            margin-top: 0.75rem;
+        }
+
+        /* ══════════════════════════════════════════
+           INSTAGRAM SECTION
+        ══════════════════════════════════════════ */
+        .instagram-text {
+            background: linear-gradient(145deg, #001a26 0%, #000d14 100%);
+            padding: 2.5rem 1.25rem;
+            text-align: center;
+            border-top: 2px solid var(--cyan);
+            border-bottom: 2px solid var(--cyan);
+        }
+
+        .instagram-text h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+            color: var(--cyan);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 12px var(--cyan);
+            line-height: 1.5;
+        }
+
+        .instagram-text a {
+            color: var(--gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            font-weight: 700;
+            text-shadow: 0 0 8px var(--gold);
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .instagram-text a:hover, .instagram-text a:active {
+            color: var(--orange);
+            text-shadow: 0 0 15px var(--orange), 0 0 30px rgba(255,100,0,0.45);
+        }
+
+        /* ══════════════════════════════════════════
+           CONTACT SECTION
+        ══════════════════════════════════════════ */
         .contact {
-            background-color: var(--darker-bg);
+            background: linear-gradient(180deg, #000 0%, #0d0000 100%);
+            padding: 4rem 1.25rem;
+            animation: fadeInUp 1s ease-out 0.9s backwards;
         }
 
         .contact-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         .contact-info {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--phoenix-blue) 100%);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--phoenix-cyan);
+            background: linear-gradient(145deg, #1a0400 0%, #0a0200 70%, #000 100%);
+            padding: 1.5rem;
+            border: 2px solid var(--orange);
+            border-radius: 2px;
+            position: relative;
+            box-shadow: 
+                0 0 14px rgba(255,68,0,0.12),
+                inset 0 0 40px rgba(0,0,0,0.6);
+            transition: all 0.3s;
+        }
+
+        .contact-info::before,
+        .contact-info::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: var(--orange);
+        }
+        .contact-info::before {
+            top: 5px; left: 5px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+        }
+        .contact-info::after {
+            bottom: 5px; right: 5px;
+            border-bottom: 2px solid;
+            border-right: 2px solid;
+        }
+
+        .contact-info:hover, .contact-info:active {
+            border-color: var(--gold);
+            box-shadow: 
+                0 0 22px rgba(255,100,0,0.3),
+                0 0 42px rgba(255,184,0,0.15),
+                inset 0 0 40px rgba(255,68,0,0.04);
+        }
+
+        .contact-info:hover::before,
+        .contact-info:hover::after {
+            border-color: var(--gold);
         }
 
         .contact-info h3 {
-            color: var(--phoenix-orange);
-            margin-bottom: 1rem;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            text-shadow: 0 0 8px rgba(255,184,0,0.5);
+            letter-spacing: 1px;
         }
 
         .contact-info p {
-            margin: 0.5rem 0;
+            margin: 0.4rem 0;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
+            line-height: 1.6;
         }
 
-        .instagram-box {
-            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--phoenix-blue) 100%);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid var(--phoenix-cyan);
-            text-align: center;
-            max-width: 400px;
-            margin: 3rem auto 0;
+        .contact-info a {
+            color: var(--cyan);
+            text-decoration: none;
+            transition: all 0.3s;
         }
 
-        .instagram-box h3 {
-            color: var(--phoenix-orange);
-            margin-bottom: 1rem;
-            text-shadow: 0 0 15px rgba(255, 107, 53, 0.8), 0 0 25px rgba(255, 107, 53, 0.5);
-            animation: instagramGlow 2s ease-in-out infinite;
+        .contact-info a:hover, .contact-info a:active {
+            color: var(--orange);
+            text-shadow: 0 0 8px var(--orange);
         }
 
-        @keyframes instagramGlow {
-            0%, 100% {
-                text-shadow: 0 0 15px rgba(255, 107, 53, 0.8), 0 0 25px rgba(255, 107, 53, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 25px rgba(255, 107, 53, 1), 0 0 40px rgba(255, 107, 53, 0.8), 0 0 50px rgba(255, 182, 39, 0.6);
-            }
-        }
-
-        @keyframes idGlow {
-            0%, 100% {
-                text-shadow: 0 0 10px rgba(78, 205, 196, 0.8), 0 0 20px rgba(78, 205, 196, 0.5);
-            }
-            50% {
-                text-shadow: 0 0 20px rgba(78, 205, 196, 1), 0 0 30px rgba(78, 205, 196, 0.8), 0 0 40px rgba(78, 205, 196, 0.6);
-            }
-        }
-
-        /* Footer */
+        /* ══════════════════════════════════════════
+           FOOTER
+        ══════════════════════════════════════════ */
         footer {
-            background-color: var(--dark-bg);
+            background: linear-gradient(180deg, #0d0000 0%, #000 100%);
             text-align: center;
-            padding: 2rem;
-            border-top: 2px solid var(--phoenix-orange);
+            padding: 2rem 1.25rem;
+            border-top: 3px solid var(--deep-red);
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan), var(--orange), var(--gold), var(--orange), var(--cyan));
+            animation: hueShift 3s linear infinite;
         }
 
         footer p {
-            color: var(--phoenix-cyan);
+            font-family: 'Orbitron', sans-serif;
+            color: var(--cyan);
+            font-size: clamp(0.7rem, 2vw, 0.95rem);
+            text-shadow: 0 0 8px rgba(0,200,255,0.5);
+            letter-spacing: 1px;
         }
 
-        /* Responsive */
+        /* ══════════════════════════════════════════
+           ANIMATIONS
+        ══════════════════════════════════════════ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.9); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE — TABLET
+        ══════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE — MOBILE (≤ 768px)
+        ══════════════════════════════════════════ */
         @media (max-width: 768px) {
+
+            /* Show hamburger, hide desktop nav */
+            .hamburger { display: flex; }
+            header nav { display: none; }
+
             .site-logo {
-                height: 55px;
-                transform: scale(1.3);
+                height: 50px;
+                transform: scale(1.25);
             }
 
-            .hero h1 {
-                font-size: 2.5rem;
+            .hero {
+                padding: 2rem 1rem 3rem;
             }
 
-            .hero p {
-                font-size: 1.1rem;
+            .hero-title-bg {
+                padding: 2rem 1rem;
+            }
+
+            .cta-container {
+                gap: 0.5rem;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .offers-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .pricing, .offers, .discounts, .contact {
+                padding: 3rem 1rem;
+            }
+        }
+
+        /* ══════════════════════════════════════════
+           RESPONSIVE — SMALL MOBILE (≤ 480px)
+        ══════════════════════════════════════════ */
+        @media (max-width: 480px) {
+            .nav-container {
+                padding: 0 1rem;
             }
 
             .pricing-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                padding: 1.5rem 0.75rem 2.5rem;
+            }
+
+            .hero-title-bg {
+                padding: 1.5rem 0.75rem;
+            }
+
+            .book-label {
+                font-size: 6px;
+            }
+
+            .cta-button {
+                padding: 14px 20px;
             }
         }
     </style>
@@ -487,27 +1099,46 @@
                 <img src="images/Phoenix-logo.png" alt="Phoenix Zone Out Logo" class="site-logo">
             </a>
 
+            <!-- Desktop nav -->
             <nav>
                 <ul>
-                    <li><a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank">Book</a></li>
                     <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#offers">Offers</a></li>
+                    <li><a href="#discounts">Discounts</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
+
+            <!-- Hamburger for mobile -->
+            <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
     </header>
+
+    <!-- Mobile nav overlay -->
+    <div class="mobile-nav-overlay" id="mobileOverlay"></div>
+    <nav class="mobile-nav-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#pricing"   id="mobileNavLink">Pricing</a></li>
+            <li><a href="#offers"    id="mobileNavLink">Offers</a></li>
+            <li><a href="#discounts" id="mobileNavLink">Discounts</a></li>
+            <li><a href="#contact"   id="mobileNavLink">Contact</a></li>
+        </ul>
+    </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-title-bg">
             <h1>Welcome to Phoenix Zone Out</h1>
         </div>        
-        <p>Gaming & Snooker Cafe - Your Ultimate Entertainment Destination</p>
+        <p>PS5 · PS4 · Snooker · Pool · VR<br>Your Ultimate Hangout Destination!</p>
         <div class="cta-container">
-            <span class="arrow left">→</span>
+            <span class="arrow-side">→</span>
             <a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank" class="cta-button">Book Your Session</a>
-            <span class="arrow right">←</span>
+            <span class="arrow-side right">←</span>
         </div>
     </section>
 
@@ -516,50 +1147,92 @@
         <div class="container">
             <h2 class="section-title">Pricing Plans</h2>
             <div class="pricing-grid">
-                <div class="pricing-card">
+
+                <!-- Each card links to booking -->
+                <a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank" class="pricing-card">
                     <h3>Pool & Snooker</h3>
                     <div class="price">₹150</div>
-                    <p>Per Hour - Pool Table</p>
-                    <div class="price" style="font-size: 1.7rem; margin-top: 1.5rem;">₹180</div>
-                    <p>Per Hour - Snooker Table</p>
-                </div>
-                <div class="pricing-card">
+                    <p>Per Hour — Pool</p>
+                    <div class="price" style="font-size: clamp(1rem, 2.5vw, 1.6rem); margin-top: 1rem;">₹180</div>
+                    <p>Per Hour — Snooker</p>
+                    <span class="book-label">TAP TO BOOK →</span>
+                </a>
+
+                <a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank" class="pricing-card">
                     <h3>PS5 Gaming</h3>
                     <div class="price">₹100</div>
                     <p>Per Hour (Solo)</p>
-                    <div class="price" style="font-size: 1.7rem; margin-top: 1.5rem;">₹180</div>
+                    <div class="price" style="font-size: clamp(1rem, 2.5vw, 1.6rem); margin-top: 1rem;">₹180</div>
                     <p>Per Hour (For Two)</p>
-                </div>
-                <div class="pricing-card">
+                    <span class="book-label">TAP TO BOOK →</span>
+                </a>
+
+                <a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank" class="pricing-card">
                     <h3>PS4 Gaming</h3>
                     <div class="price">₹90</div>
                     <p>Per Hour (Solo)</p>
-                    <div class="price" style="font-size: 1.7rem; margin-top: 1.5rem;">₹160</div>
+                    <div class="price" style="font-size: clamp(1rem, 2.5vw, 1.6rem); margin-top: 1rem;">₹160</div>
                     <p>Per Hour (For Two)</p>
-                </div>
-                <div class="pricing-card">
+                    <span class="book-label">TAP TO BOOK →</span>
+                </a>
+
+                <a href="https://cal.com/phoenix-zone-out-ruoiil" target="_blank" class="pricing-card">
                     <h3>VR Experience</h3>
                     <div class="price">₹200</div>
                     <p>Per Hour</p>
-                </div>
+                    <span class="book-label">TAP TO BOOK →</span>
+                </a>
+
             </div>
-            <div class="instagram-box">
-                <h3>📷 Follow Us on Instagram</h3>
-                <a href="https://www.instagram.com/phoenix_zoneout?igsh=eGw0a3ZhbmM2Yzc2" target="_blank" style="color: var(--phoenix-cyan); text-decoration: none; transition: all 0.3s; text-shadow: 0 0 10px rgba(78, 205, 196, 0.8), 0 0 20px rgba(78, 205, 196, 0.5);">
-                    <p style="cursor: pointer; transition: all 0.3s; font-size: 1.1rem; animation: idGlow 2s ease-in-out infinite;">@phoenix_zoneout</p>
+        </div>
+    </section>
+
+    <!-- Offers Section -->
+    <section id="offers" class="offers">
+        <div class="container">
+            <h2 class="section-title">Loyalty & Memberships</h2>
+            <p class="offers-intro">
+                Unlock exclusive rewards and benefits! Check out our loyalty program and membership plans.
+            </p>
+            <div class="offers-grid">
+                <a href="/offers" class="offer-card">
+                    <span class="offer-icon">🔥</span>
+                    <h3>LOYALTY</h3>
+                    <p>Play more. Visit more. Earn points. Use points for money.</p>
+                    <div class="offer-arrow">TAP TO VIEW →</div>
+                </a>
+                <a href="/offers" class="offer-card">
+                    <span class="offer-icon">💳</span>
+                    <h3>MEMBERSHIP</h3>
+                    <p>Get exclusive perks and offers with our weekly and monthly plans.</p>
+                    <div class="offer-arrow">TAP TO VIEW →</div>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
+    <!-- Discounts Section -->
+    <section id="discounts" class="discounts">
         <div class="container">
-            <h2 class="section-title">About Phoenix Zone Out</h2>
-            <p>
-                Phoenix Zone Out is your premier gaming and snooker destination. Chill and get entertained as you experience our PS4, PS5, Snooker and Pool games along with refreshments as you enjoy the gaming experience!!!
+            <h2 class="section-title">Discounts</h2>
+            <p class="discounts-intro">
+                Check out our exclusive discount offers and save on your gaming sessions!
             </p>
+            <a href="/offers/discounts" class="discount-card">
+                <span class="discount-icon">🎁</span>
+                <h3>DISCOUNTS</h3>
+                <p>Discounts like <span class="highlight-red">Tag A Gang!</span>, <span class="highlight-red">Happy Hours</span> and much more coming soon!</p>
+                <div class="discount-arrow">TAP TO VIEW →</div>
+            </a>
         </div>
+    </section>
+
+    <!-- Instagram Section -->
+    <section class="instagram-text">
+        <h3>📷 Follow Us on Instagram</h3>
+        <a href="https://www.instagram.com/phoenix_zoneout?igsh=eGw0a3ZhbmM2Yzc2" target="_blank">
+            @phoenix_zoneout
+        </a>
     </section>
 
     <!-- Contact Section -->
@@ -569,27 +1242,27 @@
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>📍 Location</h3>
-                    <a href="https://www.google.com/maps/search/?api=1&query=Main+Road,+3rd+Floor,+Shravanthi+Onyx+1359,+Jayanagara+9th+Block,+Jayanagar,+Bengaluru,+Karnataka+560041" target="_blank" style="color: var(--phoenix-cyan); text-decoration: none; transition: color 0.3s;">
-                        <p style="cursor: pointer; transition: color 0.3s;">Main Road, 3rd Floor</p>
-                        <p style="cursor: pointer; transition: color 0.3s;">Shravanthi Onyx #1359</p>
-                        <p style="cursor: pointer; transition: color 0.3s;">Jayanagara 9th Block, Jayanagar</p>
-                        <p style="cursor: pointer; transition: color 0.3s;">Bengaluru, Karnataka 560041</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Main+Road,+3rd+Floor,+Shravanthi+Onyx+1359,+Jayanagara+9th+Block,+Jayanagar,+Bengaluru,+Karnataka+560041" target="_blank">
+                        <p>Main Road, 3rd Floor</p>
+                        <p>Shravanthi Onyx #1359</p>
+                        <p>Jayanagara 9th Block, Jayanagar</p>
+                        <p>Bengaluru, Karnataka 560041</p>
                     </a>
                 </div>
                 <div class="contact-info">
                     <h3>📞 Phone</h3>
-                    <a href="tel:+919164314003" style="color: var(--phoenix-orange); text-decoration: none; transition: color 0.3s;">
-                        <p style="cursor: pointer; transition: color 0.3s; font-weight: bold;">+91 91643 14003</p>
+                    <a href="tel:+919164314003">
+                        <p style="font-weight: bold;">+91 91643 14003</p>
                     </a>
                 </div>
                 <div class="contact-info">
                     <h3>⏰ Hours</h3>
-                    <p>Open Daily: 10 AM - 10 PM</p>
+                    <p>Open Daily: 10 AM – 10 PM</p>
                 </div>
                 <div class="contact-info">
                     <h3>✉️ Email</h3>
-                    <a href="mailto:Phoenixzoneout5@gmail.com" style="color: var(--phoenix-cyan); text-decoration: none; transition: color 0.3s;">
-                        <p style="cursor: pointer; transition: color 0.3s;">Phoenixzoneout5@gmail.com</p>
+                    <a href="mailto:phoenixzoneout17@gmail.com">
+                        <p>phoenixzoneout17@gmail.com</p>
                     </a>
                 </div>
             </div>
@@ -598,5 +1271,48 @@
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 Phoenix Zone Out - Gaming & Snooker Cafe.</p>
+        <p>© 2025 Phoenix Zone Out. All Rights Reserved.</p>
     </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+
+    <script>
+        // ── Hamburger menu ──
+        const hamburgerBtn   = document.getElementById('hamburgerBtn');
+        const mobileMenu     = document.getElementById('mobileMenu');
+        const mobileOverlay  = document.getElementById('mobileOverlay');
+
+        function openMenu() {
+            hamburgerBtn.classList.add('open');
+            mobileMenu.classList.add('open');
+            mobileOverlay.classList.add('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMenu() {
+            hamburgerBtn.classList.remove('open');
+            mobileMenu.classList.remove('open');
+            mobileOverlay.classList.remove('open');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        hamburgerBtn.addEventListener('click', () => {
+            hamburgerBtn.classList.contains('open') ? closeMenu() : openMenu();
+        });
+
+        mobileOverlay.addEventListener('click', closeMenu);
+
+        // Close menu when a nav link is tapped
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        // ── Close menu on resize back to desktop ──
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) closeMenu();
+        });
+    </script>
+</body>
+</html>
