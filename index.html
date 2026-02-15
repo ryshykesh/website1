@@ -125,6 +125,29 @@
             filter: drop-shadow(0 0 15px rgba(255,100,0,0.6));
         }
 
+        /* Logo Animation - CSS */
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: scale(1.4) translateY(0px);
+            }
+            50% {
+                transform: scale(1.4) translateY(-8px);
+            }
+        }
+
+        @keyframes logoGlow {
+            0%, 100% {
+                filter: drop-shadow(0 0 15px rgba(255,100,0,0.6));
+            }
+            50% {
+                filter: drop-shadow(0 0 25px rgba(255,184,0,0.9)) drop-shadow(0 0 40px rgba(255,100,0,0.5));
+            }
+        }
+
+        .site-logo.animated {
+            animation: logoFloat 3s ease-in-out infinite, logoGlow 3s ease-in-out infinite;
+        }
+
         /* Desktop Nav */
         nav ul {
             list-style: none;
@@ -1103,7 +1126,7 @@
             <nav>
                 <ul>
                     <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#offers">Offers</a></li>
+                    <li><a href="#membership">Membership</a></li>
                     <li><a href="#discounts">Discounts</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -1123,7 +1146,7 @@
     <nav class="mobile-nav-menu" id="mobileMenu">
         <ul>
             <li><a href="#pricing"   id="mobileNavLink">Pricing</a></li>
-            <li><a href="#offers"    id="mobileNavLink">Offers</a></li>
+            <li><a href="#membership"    id="mobileNavLink">Membership</a></li>
             <li><a href="#discounts" id="mobileNavLink">Discounts</a></li>
             <li><a href="#contact"   id="mobileNavLink">Contact</a></li>
         </ul>
@@ -1187,23 +1210,17 @@
         </div>
     </section>
 
-    <!-- Offers Section -->
-    <section id="offers" class="offers">
+    <!-- Membership Section -->
+    <section id="membership" class="offers">
         <div class="container">
-            <h2 class="section-title">Loyalty & Memberships</h2>
+            <h2 class="section-title">Membership</h2>
             <p class="offers-intro">
-                Unlock exclusive rewards and benefits! Check out our loyalty program and membership plans.
+                Get exclusive perks and benefits with our membership plans. Unlock special offers and save on your gaming sessions!
             </p>
-            <div class="offers-grid">
-                <a href="/offers" class="offer-card">
-                    <span class="offer-icon">🔥</span>
-                    <h3>LOYALTY</h3>
-                    <p>Play more. Visit more. Earn points. Use points for money.</p>
-                    <div class="offer-arrow">TAP TO VIEW →</div>
-                </a>
+            <div class="offers-grid" style="grid-template-columns: 1fr; max-width: 400px;">
                 <a href="/offers" class="offer-card">
                     <span class="offer-icon">💳</span>
-                    <h3>MEMBERSHIP</h3>
+                    <h3 style="font-size: clamp(0.75rem, 2.2vw, 1.15rem);">MEMBERSHIP</h3>
                     <p>Get exclusive perks and offers with our weekly and monthly plans.</p>
                     <div class="offer-arrow">TAP TO VIEW →</div>
                 </a>
@@ -1261,8 +1278,8 @@
                 </div>
                 <div class="contact-info">
                     <h3>✉️ Email</h3>
-                    <a href="mailto:phoenixzoneout7@gmail.com">
-                        <p>phoenixzoneout5@gmail.com</p>
+                    <a href="/cdn-cgi/l/email-protection#45352d2a202b2c3d3f2a2b202a30317472052228242c296b262a28">
+                        <p><span class="__cf_email__" data-cfemail="c5b5adaaa0abacbdbfaaaba0aab0b1f4f285a2a8a4aca9eba6aaa8">[email&#160;protected]</span></p>
                     </a>
                 </div>
             </div>
@@ -1274,7 +1291,7 @@
         <p>© 2025 Phoenix Zone Out. All Rights Reserved.</p>
     </footer>
 
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 
     <script>
         // ── Hamburger menu ──
@@ -1309,10 +1326,37 @@
             link.addEventListener('click', closeMenu);
         });
 
-        // ── Close menu on resize back to desktop ──
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) closeMenu();
-        });
+        // ── Logo Animation ──
+        const logo = document.querySelector('.site-logo');
+        
+        if (logo) {
+            // Add animated class to trigger CSS animations
+            logo.classList.add('animated');
+            
+            // Additional JS animation for enhanced effect
+            let hueRotation = 0;
+            let scale = 1.4;
+            let direction = 1;
+            
+            function animateLogo() {
+                hueRotation = (hueRotation + 0.5) % 360;
+                
+                // Subtle pulsing scale effect
+                scale += 0.0015 * direction;
+                if (scale >= 1.45 || scale <= 1.38) {
+                    direction *= -1;
+                }
+                
+                // Apply transformations
+                logo.style.filter = `drop-shadow(0 0 15px rgba(255,100,0,0.6)) hue-rotate(${hueRotation}deg)`;
+                
+                requestAnimationFrame(animateLogo);
+            }
+            
+            // Start the animation
+            animateLogo();
+        }
     </script>
+
 </body>
 </html>
